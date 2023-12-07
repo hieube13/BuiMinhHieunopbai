@@ -1,0 +1,115 @@
+﻿@model Cart
+
+@{
+    ViewData["Title"] = "Sản phẩm mua";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Begin Main Content Area -->
+<main class="main-content">
+    <div class="breadcrumb-area breadcrumb-height" data-bg-image="assets/images/breadcrumb/bg/1-1-1920x373.jpg">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-item">
+                        <h2 class="breadcrumb-heading">Product Related</h2>
+                        <ul>
+                            <li>
+                                <a href="index.html">Home<i class="pe-7s-angle-right"></i></a>
+                            </li>
+                            <li>Cart</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form action="javascript:void(0)">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product_remove">remove</th>
+                                        <th class="product-thumbnail">images</th>
+                                        <th class="cart-product-name">Product</th>
+                                        <th class="product-price">Unit Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(var item in Model?.Lines)
+                                    {
+                                        <tr>
+                                            <td class="product_remove">
+                                                <a asp-controller="Cart" asp-action="RemoveFromCart" asp-route-productId="@item.product.ProductId">
+                                                    <i class="pe-7s-close" title="Remove"></i>
+                                                </a>
+                                            </td>
+                                            <td class="product-thumbnail">
+                                                <a href="javascript:void(0)">
+                                                    <img src="~/assets/images/product/anhdaidien/@item.product.Thumb" alt="Cart Thumbnail">
+                                                </a>
+                                            </td>
+                                            <td class="product-name"><a href="javascript:void(0)">@item.product.ProductName</a></td>
+                                            <td class="product-price"><span class="amount">@item.product.Price</span></td>
+                                            <td class="quantity">
+                                                <div class="input-group quantity mx-auto" style="width: 100px;">
+                                                    <div class="input-group-btn">
+                                                    <a asp-controller="Cart" asp-action="UpdateCart" asp-route-ProductId="@item.product.ProductId" class="btn btn-sm btn-primary btn-minus" >
+                                                        <i class="fa fa-minus"></i>
+                                                        </a>
+                                                    </div>
+                                                    <input type="text" class="form-control form-control-sm text-center" value="@item.Quantity">
+                                                    <div class="input-group-btn">
+                                                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-ProductId="@item.product.ProductId" class="btn btn-sm btn-primary btn-plus">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal"><span class="amount">@(item.product.Price * item.Quantity)</span></td>
+                                        </tr>
+                                    }
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="coupon-all">
+                                    <div class="coupon">
+                                        <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">
+                                        <input class="button mt-xxs-30" name="apply_coupon" value="Apply coupon" type="submit">
+                                    </div>
+                                    <div class="coupon2">
+                                        <input class="button" name="update_cart" value="Update cart" type="submit">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 ml-auto">
+                                <div class="cart-page-total">
+                                    <h2>Cart totals</h2>
+                                    <ul>
+                                        <li>Subtotal <span>$@(Model.ComputeTotalValue())</span></li>
+                                        <li>Shipping <span>$10</span></li>
+                                        <li>Total <span>$@(Model.ComputeTotalValue() + 10)</span></li>
+                                    </ul>
+                                    <a asp-controller="CheckOut" asp-action="Index">Thanh toán</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Main Content Area End Here -->
